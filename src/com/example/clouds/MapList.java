@@ -23,7 +23,7 @@ public class MapList extends ListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-
+		
 		//get selected items
 		String selectedValue = (String) getListAdapter().getItem(position);
 

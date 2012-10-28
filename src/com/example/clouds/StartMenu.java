@@ -28,6 +28,7 @@ public class StartMenu extends Activity{
 			public void onClick(View v) {
 				Intent harta = new Intent(StartMenu.this,MapMarkerActivity.class);
 				String filename = getNewFilename();
+				Log.d("Fis", filename);
 				harta.putExtra("Map", filename);
 				startActivity(harta);
 
@@ -62,24 +63,32 @@ public class StartMenu extends Activity{
 				fileList.add(fname);   
 		}
 
-		if (fileList.size()!=0){
-			String filename = fileList.get(0);
-			String[] aux = filename.split("_");
-			char[] c = aux[1].toCharArray();
-			String aux2 = "";
-
-			for (int i = 0; i < c.length; i++)
-				if (c[i] != '.')
-					aux2 += c[i];
-				else
-					break;
-
-			int no = Integer.parseInt(aux2);
-
-			return "harta_"+(no++)+".txt";
+		if (fileList.size() != 0){
+			int max = -1;
+			
+			for (int j = 0; j < fileList.size(); j++){
+				String filename = fileList.get(j);
+				String[] aux = filename.split("_");
+				char[] c = aux[1].toCharArray();
+				String aux2 = "";
+	
+				for (int i = 0; i < c.length; i++)
+					if (c[i] != '.')
+						aux2 += c[i];
+					else
+						break;
+	
+				int no = Integer.parseInt(aux2);
+				if (max < no)
+					max = no;
+			}
+			
+			max++;
+			
+			return "harta_" + max + ".txt";
 		}
-
-		else return "harta_1.txt";
+		else 
+			return "harta_1.txt";
 	}	
 
 }

@@ -53,7 +53,7 @@ class Marker extends View {
 		paint.setStyle(Paint.Style.FILL); 
 		paint.setColor(Color.RED); 
 		paint.setTextAlign(Align.CENTER);
-		paint.setTextSize(30);
+		paint.setTextSize(20);
 		Log.d("RollHere",Double.toString(roll));
 		
 		//canvas.drawText(Double.toString(roll)+ "\n",this.getWidth()/2,this.getHeight()/2, paint);
