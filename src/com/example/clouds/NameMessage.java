@@ -4,25 +4,17 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class NameMessage extends Activity {
@@ -37,7 +29,7 @@ public class NameMessage extends Activity {
 		Intent intent = getIntent();
 		fisier = intent.getStringExtra("Map");
 		strpoint = intent.getStringExtra("Point");
-		
+
 		TextView tv = new TextView(this);
 		name = (EditText) findViewById(R.id.name);
 		text = (EditText) findViewById(R.id.text);
@@ -52,8 +44,8 @@ public class NameMessage extends Activity {
 	}
 
 	private void writeFileToInternalStorage(String name, String continut) {
-
 		String eol = System.getProperty("line.separator");
+		
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(openFileOutput(name, MODE_APPEND)));
@@ -83,10 +75,6 @@ public class NameMessage extends Activity {
 			e = text.getText();
 			String mytext = e.toString();
 			writeFileToInternalStorage(fisier, strpoint + eol + myname + eol + mytext); 	
-			
-			// !! de scos
-			String s = readFileFromInternalStorage(fisier);
-			Log.d("Din fisier",s);
 
 			finish();
 			break;
@@ -97,32 +85,34 @@ public class NameMessage extends Activity {
 			String myname = e.toString();
 			e = text.getText();
 			String mytext = e.toString();
-			
+
 			writeFileToInternalStorage(fisier, strpoint + eol + myname + eol + mytext); 	
 			Intent myIntent = new Intent(NameMessage.this, MapMarkerActivity.class);
-			
+
 			myIntent.putExtra("Map", fisier);
 			startActivity(myIntent);
-			
+
 			finish();
 			break;
 		}
 		default:
 			break;
 		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 
 	@SuppressWarnings("unused")
 	public String readFileFromInternalStorage(String name) {
 		File directory = Environment.getExternalStorageDirectory();
+		
 		// Assumes that a file article.rss is available on the SD card
 		String path = getFilesDir().getAbsolutePath();
 		File file = new File(path + "/" + name);
 		if (!file.exists()) {
 			throw new RuntimeException("File not found");
 		}
-		Log.e("Testing", "Starting to read");
+		
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
@@ -143,6 +133,7 @@ public class NameMessage extends Activity {
 				}
 			}
 		}
+		
 		return null;
 	}
 

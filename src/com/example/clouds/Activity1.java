@@ -2,7 +2,6 @@ package com.example.clouds;
 
 
 import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -42,40 +41,39 @@ public class Activity1 extends Activity implements LocationListener {
 	private float[] valuesMagneticField;
 	private Toast toast;
 	private long lastBackPressTime = 0;
-
 	private float[] matrixR;
 	private float[] matrixI;
 	private float[] matrixValues;
-
 	private double myLat, myLng;
-
 	Button button;
 	private static final String TAG = "Compass";
-
 	private SensorManager mSensorManager;
 	private Sensor mSensor;
 	private SampleView mView;
 	private float[] mValues;
 	private int index = 0;
+
 	private final SensorEventListener mListener = new SensorEventListener() {
-		
+
 		public void onSensorChanged(SensorEvent event) {
 			if (flag){
 				mValues = event.values;
+
 				Location msj = new Location(SENSOR_SERVICE);
 				Location mel = new Location(SENSOR_SERVICE);
+
 				msj.setLatitude(locatii.get(index).getLatitude());
 				msj.setLongitude(locatii.get(index).getLongitude());
 				mel.setLatitude(myLat);
 				mel.setLongitude(myLng);
+
 				float bearing = mel.bearingTo(msj);
 				mValues[0] -=  bearing;
+
 				if (mView != null) {
 					mView.invalidate();
 				}
-	
-	
-	
+
 				switch(event.sensor.getType()){
 				case Sensor.TYPE_ACCELEROMETER:
 					for(int i =0; i < 3; i++){
@@ -88,45 +86,37 @@ public class Activity1 extends Activity implements LocationListener {
 					}
 					break;
 				}
-	
+
 				boolean success = SensorManager.getRotationMatrix(
 						matrixR,
 						matrixI,
 						valuesAccelerometer,
 						valuesMagneticField);
-	
+
 				if(success){
 					SensorManager.getOrientation(matrixR, matrixValues);
-	
-					//double azimuth = Math.toDegrees(matrixValues[0]);
-					//double pitch = Math.toDegrees(matrixValues[1]);
-					//double roll = Math.toDegrees(matrixValues[2]);
-	
 					System.out.println(matrixValues[0]);
 				}
 			}
 		}
 
-		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		}
-		
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
 	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		//se incarca, coordonatele pentru care este relizat questul
+		//se incarca coordonatele pentru care este relizat questul
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_clouds);
-		
-		//ce a facut andreea
+
 		Intent intent = getIntent();
 		String dd = intent.getStringExtra("vector");
-		
 		locatii = convert_locations(dd);
 
-		//chestii cu locatia
 		// Get the location manager
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
 		// Define the criteria how to select the location provider -> use
 		// default
 		Criteria criteria = new Criteria();
@@ -140,7 +130,7 @@ public class Activity1 extends Activity implements LocationListener {
 		} else {
 			locatie = "Location not available";
 		}
-		
+
 		//gata cu locatia
 		valuesAccelerometer = new float[3];
 		valuesMagneticField = new float[3];
@@ -156,46 +146,43 @@ public class Activity1 extends Activity implements LocationListener {
 		locatie = Integer.toString((int)distance) + " m " + Double.toString(myLat) + " " + Double.toString(myLng);
 		mView = new SampleView(this,names.get(index));
 
-
 		//aici verificam daca era distanta mai mica decat 200
 		LinearLayout mylin = (LinearLayout) findViewById(R.id.linear);
 		mylin.addView(mView); 
 	}
 
 	public ArrayList<Location> convert_locations(String d){
-		
-			messages = new ArrayList<String>();
-			names = new ArrayList<String>();
-			
-			String[] str = d.split("\n");
-			
-			ArrayList<Double> dd = new ArrayList<Double>() ;
-			
-			for (int i = 0; i < str.length - 3; i += 4){
-				double x = Double.parseDouble(str[i]);
-				if (x!=0)
-					dd.add(x);
-				
-				x = Double.parseDouble(str[i+1]);
-				if (x!=0)
-					dd.add(x);
-				
-				names.add(str[i+2]);
-				messages.add(str[i+3]);
-					
-			}
-		   
-		   ArrayList<Location> locations = new ArrayList<Location>();
-		   
-		   for (int i = 0; i < dd.size() - 1; i += 2){
-			   Location l = new Location(ALARM_SERVICE);
-			   l.setLatitude(dd.get(i));
-			   l.setLongitude(dd.get(i+1));
-			   locations.add(l);
-		   }
-		   
-		   return locations;
-		   }
+		messages = new ArrayList<String>();
+		names = new ArrayList<String>();
+
+		String[] str = d.split("\n");
+
+		ArrayList<Double> dd = new ArrayList<Double>() ;
+
+		for (int i = 0; i < str.length - 3; i += 4){
+			double x = Double.parseDouble(str[i]);
+			if (x!=0)
+				dd.add(x);
+
+			x = Double.parseDouble(str[i+1]);
+			if (x!=0)
+				dd.add(x);
+
+			names.add(str[i+2]);
+			messages.add(str[i+3]);
+		}
+
+		ArrayList<Location> locations = new ArrayList<Location>();
+
+		for (int i = 0; i < dd.size() - 1; i += 2){
+			Location l = new Location(ALARM_SERVICE);
+			l.setLatitude(dd.get(i));
+			l.setLongitude(dd.get(i+1));
+			locations.add(l);
+		}
+
+		return locations;
+	}
 
 	@Override
 	protected void onResume()
@@ -239,6 +226,7 @@ public class Activity1 extends Activity implements LocationListener {
 		private Path    mPath = new Path();
 		private boolean mAnimate;
 		String distance ;
+
 		public SampleView(Context context,String distance) {
 			super(context);
 
@@ -307,6 +295,7 @@ public class Activity1 extends Activity implements LocationListener {
 		myLng = location.getLongitude();
 		locatie = Double.toString(myLat) + " " + Double.toString(myLng);
 		distance = distance(myLat, myLng, locatii.get(index).getLatitude(),locatii.get(index).getLongitude());
+
 		//daca se ajunge la distanta < 200
 		if (distance <= 200 && ok == 0) {
 			ok = 1;
@@ -319,12 +308,13 @@ public class Activity1 extends Activity implements LocationListener {
 
 				@Override
 				public void onClick(View v) {
-
 					Intent myIntent = new Intent(Activity1.this, CameraPreview.class);
-					Log.d("MSG",messages.get(index));
-					myIntent.putExtra("mesaj",messages.get(index));		
+					myIntent.putExtra("mesaj",messages.get(index));
+
 					flag = false;
+
 					startActivity(myIntent);
+
 					index++;
 					if (names.size() <= index)
 						finish();
@@ -333,20 +323,17 @@ public class Activity1 extends Activity implements LocationListener {
 				}
 			});
 		}
+
 		Toast.makeText(this, "Distanta este " + distance  , Toast.LENGTH_LONG).show();
 	}
 
 	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-
-	}
+	public void onStatusChanged(String provider, int status, Bundle extras) {}
 
 	@Override
 	public void onProviderEnabled(String provider) {
 		Toast.makeText(this, "Enabled new provider " + provider,
 				Toast.LENGTH_SHORT).show();
-
 	}
 
 	@Override

@@ -31,7 +31,6 @@ import android.view.View;
 public class Compass extends Activity {
 
     private static final String TAG = "Compass";
-
     private SensorManager mSensorManager;
     private Sensor mSensor;
     private SampleView mView;
@@ -47,8 +46,7 @@ public class Compass extends Activity {
             }
         }
 
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        }
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
     };
 
     @Override

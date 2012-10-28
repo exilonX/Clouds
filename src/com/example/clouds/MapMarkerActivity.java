@@ -1,10 +1,7 @@
 package com.example.clouds;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
-
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -20,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapActivity;
@@ -29,8 +25,8 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.OverlayItem;
 
 public class MapMarkerActivity extends MapActivity {
-	private MapView map=null;
-	private MyLocationOverlay me=null;
+	private MapView map = null;
+	private MyLocationOverlay me = null;
 	// initilizam locatia de agaudat in hunt cu o locatie oarecare, aceasta locatie schimbandu-se 
 	// la miscarea pinului pe ecran
 	GeoPoint pt =  getPoint(44.419398, 26.081992);
@@ -38,10 +34,10 @@ public class MapMarkerActivity extends MapActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		Intent in = getIntent();
 		final String numefis = in.getStringExtra("Map");	
-		
+
 		setContentView(R.layout.activity_map_marker);
 		// buton pt adaugare de text pentru locatia pt
 		LinearLayout ll = (LinearLayout)findViewById(R.id.btn);
@@ -53,9 +49,8 @@ public class MapMarkerActivity extends MapActivity {
 
 			@Override
 			public void onClick(View v) {
-				
 				Intent myIntent = new Intent(MapMarkerActivity.this, NameMessage.class);
-				
+
 				myIntent.putExtra("Point",Double.toString(((double)pt.getLatitudeE6())/1000000) + "\n" + Double.toString(((double)pt.getLongitudeE6())/1000000));
 				myIntent.putExtra("Map",numefis);
 				startActivity(myIntent);
