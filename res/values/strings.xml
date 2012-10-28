@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="app_name">Clouds</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_clouds">Clouds</string>
+    <string name="title_start_menu">Clouds</string>
+    <string name="newTH">Create Quest</string>
+    <string name="playTH">Play Quest</string>
+    <string name="title_maplist">Map List</string>
+
+</resources>
